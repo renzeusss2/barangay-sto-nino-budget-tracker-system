@@ -1,0 +1,456 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   PREMIUM EXECUTIVE THEME
+   Deep Forest · Gold Accents · Crisp White
+   Barangay Sto. Niño Budget System
+   ============================================ */
+
+:root {
+  /* Backgrounds */
+  --bg-base:        #0e1a12;
+  --bg-surface:     #122018;
+  --bg-card:        #1a2e20;
+  --bg-card-hover:  #1f3626;
+  --bg-elevated:    #243d2a;
+  --bg-input:       #1a2e20;
+
+  /* Borders */
+  --border-subtle:  #243d2a;
+  --border-mid:     #2f5238;
+  --border-gold:    rgba(196,156,64,0.35);
+
+  /* Gold Accent System */
+  --gold:           #c49c40;
+  --gold-light:     #e8c060;
+  --gold-dim:       rgba(196,156,64,0.12);
+  --gold-glow:      rgba(196,156,64,0.2);
+
+  /* Green Accents (subtle only) */
+  --green-soft:     #2d6a38;
+  --green-muted:    rgba(45,106,56,0.3);
+
+  /* Text — NO GREEN TEXT */
+  --text-primary:   #f0f0f0;
+  --text-secondary: #b8c4bb;
+  --text-muted:     #6e8872;
+  --text-white:     #ffffff;
+
+  /* Status colors */
+  --success:        #4ade80;
+  --warning:        #fbbf24;
+  --danger:         #f87171;
+  --info:           #60a5fa;
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    margin: 0; padding: 0; min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg-surface); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; opacity: 0.5; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold-light); }
+}
+
+@layer components {
+
+  /* ── Cards ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    border-color: var(--border-gold);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+
+  .card-sm {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 1rem;
+    transition: border-color 0.2s;
+  }
+  .card-sm:hover { border-color: var(--border-gold); }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold) 0%, #a8832e 100%);
+    color: #0e1a12;
+    border: 1px solid var(--gold-light);
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+    box-shadow: 0 4px 16px var(--gold-glow);
+    transform: translateY(-1px);
+  }
+  .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  .btn-secondary {
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-mid);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.15s;
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+  .btn-secondary:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+    border-color: var(--border-gold);
+  }
+
+  .btn-danger {
+    background: rgba(185,28,28,0.15);
+    color: var(--danger);
+    border: 1px solid rgba(248,113,113,0.25);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.15s;
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+  .btn-danger:hover { background: rgba(185,28,28,0.28); }
+
+  .btn-success {
+    background: rgba(74,222,128,0.1);
+    color: var(--success);
+    border: 1px solid rgba(74,222,128,0.25);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.15s;
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+  .btn-success:hover { background: rgba(74,222,128,0.18); }
+
+  /* ── Inputs ── */
+  .input {
+    background: var(--bg-input);
+    border: 1px solid var(--border-mid);
+    color: var(--text-primary);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    font-size: 0.875rem;
+    transition: all 0.15s;
+    outline: none;
+  }
+  .input::placeholder { color: var(--text-muted); }
+  .input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-dim);
+  }
+  select.input option { background: var(--bg-card); color: var(--text-primary); }
+
+  .label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+  }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    border: 1px solid;
+    letter-spacing: 0.02em;
+  }
+  .badge-green  { background: rgba(74,222,128,0.1);  color: #86efac; border-color: rgba(74,222,128,0.3); }
+  .badge-yellow { background: rgba(251,191,36,0.1);  color: #fcd34d; border-color: rgba(251,191,36,0.3); }
+  .badge-red    { background: rgba(248,113,113,0.1); color: #fca5a5; border-color: rgba(248,113,113,0.3); }
+  .badge-blue   { background: rgba(96,165,250,0.1);  color: #93c5fd; border-color: rgba(96,165,250,0.3); }
+  .badge-slate  { background: var(--bg-elevated); color: var(--text-secondary); border-color: var(--border-mid); }
+  .badge-gold   { background: var(--gold-dim); color: var(--gold-light); border-color: var(--border-gold); }
+
+  /* ── Stat Cards ── */
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .stat-card:hover {
+    border-color: var(--border-gold);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    transform: translateY(-2px);
+  }
+  .stat-card:hover::after { opacity: 1; }
+
+  /* ── Table ── */
+  .table-header {
+    text-align: left;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.75rem 1rem;
+    background: var(--bg-surface);
+  }
+  .table-cell {
+    padding: 0.75rem 1rem;
+    font-size: 0.825rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  /* ── Navigation ── */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .nav-item:hover {
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+    border-color: var(--border-mid);
+  }
+
+  .nav-item-active {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 8px;
+    color: var(--gold-light);
+    background: var(--gold-dim);
+    border: 1px solid var(--border-gold);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* ── Typography ── */
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-white);
+  }
+  .page-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-white);
+    letter-spacing: -0.02em;
+  }
+
+  /* ── Blockchain hash ── */
+  .blockchain-hash {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gold-light);
+    background: var(--gold-dim);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-gold);
+    word-break: break-all;
+  }
+
+  /* ── Gold divider ── */
+  .gold-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.3;
+    margin: 1rem 0;
+  }
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--gold-glow); }
+  50%       { box-shadow: 0 0 0 6px transparent; }
+}
+
+.animate-fade-in  { animation: fadeIn  0.3s ease-out; }
+.animate-slide-in { animation: slideIn 0.3s ease-out; }
+.animate-gold-pulse { animation: goldPulse 2s infinite; }
+
+.shimmer {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-elevated) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ============================================
+   PREMIUM TABLE OVERRIDE
+   Light rows · Dark text · Gold accents
+   ============================================ */
+
+/* Table container */
+.card.p-0 { overflow: hidden; }
+
+/* Table wrapper */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+/* Header row — dark forest green */
+.table-header {
+  background: #162019 !important;
+  color: var(--gold) !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  padding: 0.875rem 1.25rem !important;
+  text-transform: uppercase !important;
+  white-space: nowrap;
+}
+
+/* Data rows — crisp white/off-white */
+.table-cell {
+  background: #f9f7f2 !important;
+  color: #1a2e20 !important;
+  font-size: 0.825rem !important;
+  font-weight: 400 !important;
+  padding: 0.875rem 1.25rem !important;
+  border-bottom: 1px solid #e8e4d8 !important;
+  vertical-align: middle;
+}
+
+/* Alternating row tint */
+tr:nth-child(even) .table-cell {
+  background: #f3f0e8 !important;
+}
+
+/* Row hover */
+tr:hover .table-cell {
+  background: #ede8d8 !important;
+}
+
+/* Override white text in table cells to dark */
+tr .table-cell * {
+  color: inherit;
+}
+
+tr .table-cell .text-white,
+tr .table-cell .text-slate-300,
+tr .table-cell .text-slate-200 {
+  color: #1a2e20 !important;
+}
+
+tr .table-cell .text-slate-400,
+tr .table-cell .text-slate-500,
+tr .table-cell .text-slate-600 {
+  color: #5a7060 !important;
+}
+
+/* Amount text — keep gold for income/expenses */
+tr .table-cell .text-green-400 { color: #166534 !important; }
+tr .table-cell .text-red-400   { color: #991b1b !important; }
+tr .table-cell .text-blue-400  { color: #1e5c30 !important; font-weight: 600; }
+
+/* Monospace ref numbers in table */
+tr .table-cell .font-mono { color: #1a4a2a !important; }
+
+/* Badges inside table — keep colored but adjust */
+tr .table-cell .badge-green  { background: #dcfce7; color: #166534; border-color: #86efac; }
+tr .table-cell .badge-yellow { background: #fef9c3; color: #854d0e; border-color: #fde047; }
+tr .table-cell .badge-red    { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+tr .table-cell .badge-blue   { background: #dbeafe; color: #1e40af; border-color: #93c5fd; }
+tr .table-cell .badge-slate  { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+
+/* Action buttons in table */
+tr .table-cell button {
+  opacity: 0.85;
+}
+tr .table-cell button:hover {
+  opacity: 1;
+}
+
+/* Blockchain hash in table */
+tr .table-cell .blockchain-hash {
+  color: #1a4a2a !important;
+  background: rgba(26,74,42,0.08) !important;
+  border-color: rgba(26,74,42,0.2) !important;
+}
+
+/* Table pagination area */
+.card .border-t {
+  background: #f9f7f2;
+  border-color: #e8e4d8 !important;
+}
+.card .border-t span,
+.card .border-t button {
+  color: #5a7060 !important;
+}
+
+/* Category name text in table */
+tr .table-cell p.text-sm { color: #1a2e20 !important; font-weight: 500; }
+tr .table-cell p.text-xs { color: #5a7060 !important; }

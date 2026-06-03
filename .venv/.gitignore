@@ -1,0 +1,30 @@
+*# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Environment variables — HUWAG I-COMMIT
+.env
+*.env
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Password reset tokens
+password_reset_tokens.json
+
+# Node
+node_modules/
+dist/
+.next/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
