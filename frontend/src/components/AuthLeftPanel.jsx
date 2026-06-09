@@ -1,8 +1,8 @@
 // ─── AuthLeftPanel.jsx ────────────────────────────────────────────────────────
 // import logo from '../assets/logo.png'  ← uncomment when ready
 
-import photo1 from '../assets/photo_1.jpg'
-import photo2 from '../assets/photo_2.jpg'
+import photo1 from '../assets/Photo_1.jpg'
+import photo2 from '../assets/Photo_2.jpg'
 
 import { useEffect, useState } from 'react'
 import { Shield } from 'lucide-react'
