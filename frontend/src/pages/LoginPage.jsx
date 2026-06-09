@@ -1,3 +1,4 @@
+import logo from '../assets/logo.jpg'
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
@@ -43,7 +44,13 @@ export default function LoginPage() {
 
           {/* Mobile logo */}
           <div className="mb-8 lg:hidden text-center">
-            <div className="text-5xl mb-3">🏛️</div>
+            <div className="mb-3 flex justify-center">
+            <img
+              src={logo.jpg}
+              alt="Barangay Sto. Niño Logo"
+              className="w-24 h-24 object-contain"
+            />
+          </div>
             <h1 className="text-2xl font-bold" style={{ color: 'var(--text-white)' }}>Barangay Sto. Niño</h1>
             <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Budget Tracking System</p>
           </div>

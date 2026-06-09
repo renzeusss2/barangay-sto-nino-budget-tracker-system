@@ -4,6 +4,7 @@ import { authAPI } from '../utils/api'
 import { Lock, User, Mail, Shield, Eye, EyeOff, UserPlus, ChevronDown, ArrowLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { AuthLeftPanel } from '../components/AuthLeftPanel'
+import logo from '../assets/logo.jpg'
 
 const ROLES = [
   { value: 'official',  label: 'Barangay Official', desc: 'View dashboards & reports' },
@@ -77,7 +78,11 @@ export default function RegisterPage() {
 
           {/* Mobile logo */}
           <div className="mb-6 lg:hidden text-center">
-            <div className="text-5xl mb-3">🏛️</div>
+            <img
+                          src={logo}
+                          alt="Barangay Sto. Niño Logo"
+                          className="w-24 h-24 object-contain"
+                        />
             <h1 className="text-2xl font-bold" style={{ color: 'var(--text-white)' }}>Barangay Sto. Niño</h1>
             <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Budget Tracking System</p>
           </div>

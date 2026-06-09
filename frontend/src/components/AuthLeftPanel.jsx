@@ -3,11 +3,13 @@
 
 import photo1 from '../assets/Photo_1.jpg'
 import photo2 from '../assets/Photo_2.jpg'
+import photo3 from '../assets/Photo_3.jpg'
+import photo4 from '../assets/Photo_4.jpg'
 
 import { useEffect, useState } from 'react'
 import { Shield } from 'lucide-react'
 
-const PHOTOS = [photo1, photo2]
+const PHOTOS = [photo1, photo2, photo3, photo4]
 
 export function AuthLeftPanel({ variant = 'login' }) {
   const [photoIdx, setPhotoIdx] = useState(0)
