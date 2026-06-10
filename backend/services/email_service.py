@@ -1,18 +1,11 @@
-import smtplib
+import resend
 import os
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
-# ── Gmail Configuration ────────────────────────────────────────────────────────
-# Set these in your .env file:
-#   GMAIL_ADDRESS=yourbarangay@gmail.com
-#   GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx  ← Google App Password (not your regular password)
-#   FRONTEND_URL=http://localhost:3000       ← Change to Railway URL when deployed
+RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
+FRONTEND_URL   = os.getenv("FRONTEND_URL", "http://localhost:3000")
+SYSTEM_NAME    = "Barangay Sto. Niño Budget Tracking System"
 
-GMAIL_ADDRESS = os.getenv("GMAIL_USER", "") or os.getenv("GMAIL_ADDRESS", "")
-GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "")
-FRONTEND_URL      = os.getenv("FRONTEND_URL", "http://localhost:3000")
-SYSTEM_NAME       = "Barangay Sto. Niño Budget Tracking System"
+resend.api_key = RESEND_API_KEY
 
 
 def send_password_reset_email(
@@ -21,13 +14,12 @@ def send_password_reset_email(
     reset_token: str,
     expires_minutes: int = 30,
 ):
-    if not GMAIL_ADDRESS or not GMAIL_APP_PASSWORD:
-        print(f"[EMAIL] Gmail not configured. Reset token for {to_email}: {reset_token}")
+    if not RESEND_API_KEY:
+        print(f"[EMAIL] Resend not configured. Reset token for {to_email}: {reset_token}")
         return
 
     reset_link = f"{FRONTEND_URL}/reset-password?token={reset_token}"
 
-    # ── HTML Email Template ────────────────────────────────────────────────────
     html = f"""
     <!DOCTYPE html>
     <html>
@@ -40,8 +32,6 @@ def send_password_reset_email(
         <tr>
           <td align="center">
             <table width="600" cellpadding="0" cellspacing="0" style="background-color:#122018;border-radius:16px;border:1px solid #2f5238;overflow:hidden;max-width:600px;">
-
-              <!-- Header -->
               <tr>
                 <td style="background:linear-gradient(135deg,#0a1a0c,#0f2414);padding:40px 40px 30px;text-align:center;border-bottom:2px solid #c49c40;">
                   <div style="font-size:48px;margin-bottom:16px;">🏛️</div>
@@ -50,13 +40,9 @@ def send_password_reset_email(
                   <p style="color:#6e8872;font-size:12px;margin:4px 0 0;">Budget Tracking System</p>
                 </td>
               </tr>
-
-              <!-- Gold divider -->
               <tr>
                 <td style="height:3px;background:linear-gradient(90deg,transparent,#c49c40,transparent);"></td>
               </tr>
-
-              <!-- Body -->
               <tr>
                 <td style="padding:40px;">
                   <h2 style="color:#ffffff;font-size:20px;font-weight:600;margin:0 0 16px;">Password Reset Request</h2>
@@ -68,8 +54,6 @@ def send_password_reset_email(
                     <strong style="color:#e8c060;">{SYSTEM_NAME}</strong>.
                     Click the button below to set a new password.
                   </p>
-
-                  <!-- Reset Button -->
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <tr>
                       <td align="center" style="padding:10px 0 30px;">
@@ -80,8 +64,6 @@ def send_password_reset_email(
                       </td>
                     </tr>
                   </table>
-
-                  <!-- Warning box -->
                   <div style="background:rgba(196,156,64,0.08);border:1px solid rgba(196,156,64,0.25);border-radius:10px;padding:16px 20px;margin-bottom:24px;">
                     <p style="color:#e8c060;font-size:13px;font-weight:600;margin:0 0 6px;">⏰ Important</p>
                     <p style="color:#b8c4bb;font-size:13px;margin:0;line-height:1.6;">
@@ -90,16 +72,12 @@ def send_password_reset_email(
                       your account remains secure.
                     </p>
                   </div>
-
-                  <!-- Manual link -->
                   <p style="color:#6e8872;font-size:12px;margin:0 0 8px;">If the button doesn't work, copy and paste this link:</p>
                   <p style="background:#0e1a12;border:1px solid #2f5238;border-radius:6px;padding:10px 14px;margin:0;word-break:break-all;">
                     <a href="{reset_link}" style="color:#c49c40;font-size:12px;font-family:monospace;text-decoration:none;">{reset_link}</a>
                   </p>
                 </td>
               </tr>
-
-              <!-- Footer -->
               <tr>
                 <td style="background:#0a1a0c;padding:24px 40px;border-top:1px solid #243d2a;text-align:center;">
                   <p style="color:#6e8872;font-size:12px;margin:0 0 4px;">
@@ -110,7 +88,6 @@ def send_password_reset_email(
                   </p>
                 </td>
               </tr>
-
             </table>
           </td>
         </tr>
@@ -119,41 +96,13 @@ def send_password_reset_email(
     </html>
     """
 
-    # ── Plain text fallback ────────────────────────────────────────────────────
-    plain = f"""
-Password Reset Request — {SYSTEM_NAME}
-
-Hello {full_name},
-
-We received a request to reset your password.
-Click the link below to set a new password (expires in {expires_minutes} minutes):
-
-{reset_link}
-
-If you did not request this, ignore this email — your account is safe.
-
-— Barangay Sto. Niño Budget Tracking System
-    """
-
-    # ── Send via Gmail SMTP ────────────────────────────────────────────────────
     try:
-        msg = MIMEMultipart("alternative")
-        msg["Subject"] = f"🔐 Password Reset — {SYSTEM_NAME}"
-        msg["From"]    = f"Barangay Sto. Niño Budget System <{GMAIL_ADDRESS}>"
-        msg["To"]      = to_email
-
-        msg.attach(MIMEText(plain, "plain"))
-        msg.attach(MIMEText(html,  "html"))
-
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(GMAIL_ADDRESS, GMAIL_APP_PASSWORD)
-            server.sendmail(GMAIL_ADDRESS, to_email, msg.as_string())
-
+        resend.Emails.send({
+            "from": "Barangay Sto. Niño Budget System <onboarding@resend.dev>",
+            "to": to_email,
+            "subject": f"🔐 Password Reset — {SYSTEM_NAME}",
+            "html": html,
+        })
         print(f"[EMAIL] ✅ Password reset email sent to {to_email}")
-
-    except smtplib.SMTPAuthenticationError:
-        print("[EMAIL] ❌ Gmail authentication failed. Check GMAIL_ADDRESS and GMAIL_APP_PASSWORD in .env")
-    except smtplib.SMTPException as e:
-        print(f"[EMAIL] ❌ SMTP error: {e}")
     except Exception as e:
         print(f"[EMAIL] ❌ Unexpected error: {e}")
