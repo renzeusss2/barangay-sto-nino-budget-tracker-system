@@ -1,3 +1,4 @@
+import logo from '../assets/logo.jpg'
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { Lock, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react'
@@ -51,7 +52,7 @@ export default function ResetPasswordPage() {
 
           {/* Mobile logo */}
           <div className="mb-6 lg:hidden text-center">
-            <div className="text-4xl mb-2">🏛️</div>
+            <img src={logo} alt="Barangay Sto. Niño Logo" className="w-16 h-16 object-contain mx-auto mb-2" />
             <h1 className="text-xl font-bold" style={{ color: 'var(--text-white)' }}>Barangay Sto. Niño</h1>
           </div>
 
@@ -60,7 +61,7 @@ export default function ResetPasswordPage() {
 
             {/* Logo header */}
             <div className="text-center mb-6">
-              <div className="text-4xl mb-2">🏛️</div>
+              <img src={logo} alt="Barangay Sto. Niño Logo" className="w-16 h-16 object-contain mx-auto mb-2" />
               <h1 className="text-lg font-bold" style={{ color: 'var(--text-white)' }}>Barangay Sto. Niño</h1>
               <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Budget Tracking System</p>
             </div>

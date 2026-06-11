@@ -46,7 +46,7 @@ export default function LoginPage() {
           <div className="mb-8 lg:hidden text-center">
             <div className="mb-3 flex justify-center">
             <img
-              src={logo.jpg}
+              src={logo} 
               alt="Barangay Sto. Niño Logo"
               className="w-24 h-24 object-contain"
             />

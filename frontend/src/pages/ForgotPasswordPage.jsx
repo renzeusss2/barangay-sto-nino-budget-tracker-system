@@ -1,3 +1,4 @@
+import logo from '../assets/logo.jpg'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail, User, ArrowLeft, CheckCircle } from 'lucide-react'
@@ -42,7 +43,7 @@ export default function ForgotPasswordPage() {
 
           {/* Mobile logo */}
           <div className="mb-6 lg:hidden text-center">
-            <div className="text-4xl mb-2">🏛️</div>
+            <img src={logo} alt="Barangay Sto. Niño Logo" className="w-16 h-16 object-contain mx-auto mb-2" />
             <h1 className="text-xl font-bold" style={{ color: 'var(--text-white)' }}>Barangay Sto. Niño</h1>
           </div>
 
