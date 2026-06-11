@@ -37,7 +37,7 @@ export default function Layout() {
                 src={logo}
                 alt="Logo"
                 className="w-full h-full object-contain"
-                style={{ mixBlendMode: 'multiply' }}
+                style={{ mixBlendMode: 'screen' }}
               />
             </div>
             <div>
@@ -83,7 +83,7 @@ export default function Layout() {
               src={logo}
               alt="Logo"
               className="w-4 h-4 object-contain"
-              style={{ mixBlendMode: 'multiply' }}
+              style={{ mixBlendMode: 'screen' }}
             />
             <span>Barangay Sto. Niño</span><span>·</span><span>Budget Tracking System</span>
           </div>
