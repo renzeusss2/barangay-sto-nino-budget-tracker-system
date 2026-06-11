@@ -1,4 +1,4 @@
-import logo from '../assets/logo.jpg'
+import logo from '../assets/logo.png'
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
@@ -45,12 +45,15 @@ export default function LoginPage() {
           {/* Mobile logo */}
           <div className="mb-8 lg:hidden text-center">
             <div className="mb-3 flex justify-center">
-            <img
-              src={logo} 
-              alt="Barangay Sto. Niño Logo"
-              className="w-24 h-24 object-contain"
-            />
-          </div>
+              <div className="w-24 h-24 rounded-full overflow-hidden" style={{ border: '2px solid var(--border-gold)' }}>
+                <img
+                  src={logo}
+                  alt="Barangay Sto. Niño Logo"
+                  className="w-full h-full object-cover"
+                  style={{ mixBlendMode: 'screen' }}
+                />
+              </div>
+            </div>
             <h1 className="text-2xl font-bold" style={{ color: 'var(--text-white)' }}>Barangay Sto. Niño</h1>
             <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Budget Tracking System</p>
           </div>
@@ -112,7 +115,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* ✅ Fixed: © 2025 consistent sa lahat ng pages */}
           <p className="text-center text-xs mt-6" style={{ color: 'var(--text-muted)' }}>
             AI-Powered & Blockchain-Based Budget Tracking System v1.0<br />
             © 2025 Barangay Sto. Niño, Parañaque City
