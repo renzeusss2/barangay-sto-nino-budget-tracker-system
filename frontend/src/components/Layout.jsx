@@ -2,7 +2,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { LayoutDashboard, Receipt, PiggyBank, BarChart3, Brain, Link, LogOut, ChevronDown } from 'lucide-react'
 import { useState } from 'react'
-import logo from '../assets/logo.jpg'
+import logo from '../assets/logo.png'
 
 const NAV_ITEMS = [
   { to: '/',             label: 'Dashboard',        icon: LayoutDashboard, exact: true },
@@ -37,7 +37,6 @@ export default function Layout() {
                 src={logo}
                 alt="Logo"
                 className="w-full h-full object-contain"
-                style={{ mixBlendMode: 'screen' }}
               />
             </div>
             <div>
@@ -83,7 +82,6 @@ export default function Layout() {
               src={logo}
               alt="Logo"
               className="w-4 h-4 object-contain"
-              style={{ mixBlendMode: 'screen' }}
             />
             <span>Barangay Sto. Niño</span><span>·</span><span>Budget Tracking System</span>
           </div>
