@@ -1,6 +1,7 @@
 // ─── AuthLeftPanel.jsx ────────────────────────────────────────────────────────
 // import logo from '../assets/logo.png'  ← uncomment when ready
 
+import logo from '../assets/logo.jpg'
 import photo1 from '../assets/Photo_1.jpg'
 import photo2 from '../assets/Photo_2.jpg'
 import photo3 from '../assets/Photo_3.jpg'
@@ -116,7 +117,7 @@ export function AuthLeftPanel({ variant = 'login' }) {
           }}
         >
           {/* Replace with: <img src={logo} alt="Logo" className="w-16 h-16 object-contain rounded-full" /> */}
-          🏛️
+          <img src={logo} alt="Barangay Sto. Niño Logo" className="w-16 h-16 object-contain rounded-full" />
         </div>
 
         <h1
