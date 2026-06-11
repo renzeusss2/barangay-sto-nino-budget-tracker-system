@@ -32,11 +32,12 @@ export default function Layout() {
         <div style={{ height: '2px', background: 'linear-gradient(90deg, var(--gold), var(--gold-light), transparent)' }} />
         <div className="p-5" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-lg flex-shrink-0 overflow-hidden" style={{ border: '1px solid var(--border-gold)' }}>
+            <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden" style={{ border: '1px solid var(--border-gold)' }}>
               <img
                 src={logo}
                 alt="Logo"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-cover"
+                style={{ mixBlendMode: 'screen' }}
               />
             </div>
             <div>
@@ -81,7 +82,8 @@ export default function Layout() {
             <img
               src={logo}
               alt="Logo"
-              className="w-4 h-4 object-contain"
+              className="w-4 h-4 rounded-full object-cover"
+              style={{ mixBlendMode: 'screen' }}
             />
             <span>Barangay Sto. Niño</span><span>·</span><span>Budget Tracking System</span>
           </div>
