@@ -1,7 +1,6 @@
 // ─── AuthLeftPanel.jsx ────────────────────────────────────────────────────────
-// import logo from '../assets/logo.png'  ← uncomment when ready
+import logo from '../assets/logo.png'
 
-import logo from '../assets/logo.jpg'
 import photo1 from '../assets/Photo_1.jpg'
 import photo2 from '../assets/Photo_2.jpg'
 import photo3 from '../assets/Photo_3.jpg'
@@ -107,17 +106,20 @@ export function AuthLeftPanel({ variant = 'login' }) {
 
         {/* Logo circle */}
         <div
-          className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4"
+          className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden"
           style={{
             background: 'rgba(26,46,32,0.8)',
             border: '2px solid var(--gold)',
             boxShadow: '0 0 24px rgba(196,156,64,0.3)',
             backdropFilter: 'blur(8px)',
-            fontSize: '48px',
           }}
         >
-          {/* Replace with: <img src={logo} alt="Logo" className="w-16 h-16 object-contain rounded-full" /> */}
-          <img src={logo} alt="Barangay Sto. Niño Logo" className="w-16 h-16 object-contain rounded-full" />
+          <img
+            src={logo}
+            alt="Barangay Sto. Niño Logo"
+            className="w-full h-full object-cover"
+            style={{ mixBlendMode: 'screen' }}
+          />
         </div>
 
         <h1
@@ -150,7 +152,7 @@ export function AuthLeftPanel({ variant = 'login' }) {
           ))}
         </div>
 
-        {/* ── Photo dots — inside content, always visible ── */}
+        {/* ── Photo dots ── */}
         <div className="flex justify-center gap-2">
           {PHOTOS.map((_, i) => (
             <button
