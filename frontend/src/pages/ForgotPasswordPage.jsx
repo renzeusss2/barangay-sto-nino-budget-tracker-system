@@ -1,4 +1,4 @@
-import logo from '../assets/logo.jpg'
+import logo from '../assets/logo.png'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail, User, ArrowLeft, CheckCircle } from 'lucide-react'
@@ -25,11 +25,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen flex" style={{ background: 'var(--bg-base)' }}>
-
-      {/* ── Left Panel — Photo Background ── */}
       <AuthLeftPanel variant="forgot" />
-
-      {/* ── Right Panel ── */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
 
@@ -43,7 +39,16 @@ export default function ForgotPasswordPage() {
 
           {/* Mobile logo */}
           <div className="mb-6 lg:hidden text-center">
-            <img src={logo} alt="Barangay Sto. Niño Logo" className="w-16 h-16 object-contain mx-auto mb-2" />
+            <div className="flex justify-center mb-2">
+              <div className="w-16 h-16 rounded-full overflow-hidden" style={{ border: '2px solid var(--border-gold)' }}>
+                <img
+                  src={logo}
+                  alt="Barangay Sto. Niño Logo"
+                  className="w-full h-full object-cover"
+                  style={{ mixBlendMode: 'screen' }}
+                />
+              </div>
+            </div>
             <h1 className="text-xl font-bold" style={{ color: 'var(--text-white)' }}>Barangay Sto. Niño</h1>
           </div>
 
@@ -56,7 +61,6 @@ export default function ForgotPasswordPage() {
                 <p className="text-sm mb-7" style={{ color: 'var(--text-muted)' }}>
                   Enter your username and registered email. We'll send you a reset link.
                 </p>
-
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="label">Username</label>
