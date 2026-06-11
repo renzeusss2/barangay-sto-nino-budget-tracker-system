@@ -2,6 +2,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { LayoutDashboard, Receipt, PiggyBank, BarChart3, Brain, Link, LogOut, ChevronDown } from 'lucide-react'
 import { useState } from 'react'
+import logo from '../assets/logo.jpg'
 
 const NAV_ITEMS = [
   { to: '/',             label: 'Dashboard',        icon: LayoutDashboard, exact: true },
@@ -31,7 +32,9 @@ export default function Layout() {
         <div style={{ height: '2px', background: 'linear-gradient(90deg, var(--gold), var(--gold-light), transparent)' }} />
         <div className="p-5" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0" style={{ background: 'var(--gold-dim)', border: '1px solid var(--border-gold)' }}>🏛️</div>
+            <div className="w-10 h-10 rounded-lg flex-shrink-0 overflow-hidden" style={{ border: '1px solid var(--border-gold)' }}>
+              <img src={logo} alt="Logo" className="w-full h-full object-contain" />
+            </div>
             <div>
               <p className="text-xs leading-none" style={{ color: 'var(--text-muted)' }}>Barangay Sto. Niño</p>
               <p className="text-sm font-bold leading-tight" style={{ color: 'var(--text-white)' }}>Budget System</p>
@@ -71,7 +74,7 @@ export default function Layout() {
       <main className="flex-1 overflow-auto">
         <div className="px-6 py-3 flex items-center justify-between" style={{ background: 'var(--bg-surface)', borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
-            <span style={{ color: 'var(--gold)' }}>🏛️</span>
+            <img src={logo} alt="Logo" className="w-4 h-4 object-contain" />
             <span>Barangay Sto. Niño</span><span>·</span><span>Budget Tracking System</span>
           </div>
           <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
