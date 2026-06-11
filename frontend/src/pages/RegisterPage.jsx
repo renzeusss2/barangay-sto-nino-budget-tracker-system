@@ -4,7 +4,7 @@ import { authAPI } from '../utils/api'
 import { Lock, User, Mail, Shield, Eye, EyeOff, UserPlus, ChevronDown, ArrowLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { AuthLeftPanel } from '../components/AuthLeftPanel'
-import logo from '../assets/logo.jpg'
+import logo from '../assets/logo.png'
 
 const ROLES = [
   { value: 'official',  label: 'Barangay Official', desc: 'View dashboards & reports' },
@@ -57,15 +57,10 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex" style={{ background: 'var(--bg-base)' }}>
-
-      {/* ── Left Panel ── */}
       <AuthLeftPanel variant="register" />
-
-      {/* ── Right Panel ── */}
       <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
         <div className="w-full max-w-md py-8">
 
-          {/* ── Back Button ── */}
           <Link
             to="/login"
             className="inline-flex items-center gap-2 mb-6 text-sm transition-colors"
@@ -78,24 +73,26 @@ export default function RegisterPage() {
 
           {/* Mobile logo */}
           <div className="mb-6 lg:hidden text-center">
-            <img
-                          src={logo}
-                          alt="Barangay Sto. Niño Logo"
-                          className="w-24 h-24 object-contain"
-                        />
+            <div className="mb-3 flex justify-center">
+              <div className="w-24 h-24 rounded-full overflow-hidden" style={{ border: '2px solid var(--border-gold)' }}>
+                <img
+                  src={logo}
+                  alt="Barangay Sto. Niño Logo"
+                  className="w-full h-full object-cover"
+                  style={{ mixBlendMode: 'screen' }}
+                />
+              </div>
+            </div>
             <h1 className="text-2xl font-bold" style={{ color: 'var(--text-white)' }}>Barangay Sto. Niño</h1>
             <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Budget Tracking System</p>
           </div>
 
           <div className="rounded-2xl p-8" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', boxShadow: '0 24px 64px rgba(0,0,0,0.5)' }}>
             <div className="rounded-full h-1 mb-6" style={{ background: 'linear-gradient(90deg, var(--gold), var(--gold-light))' }} />
-
             <h2 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-white)' }}>Create Account</h2>
             <p className="text-sm mb-7" style={{ color: 'var(--text-muted)' }}>Register to access the budget management system</p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-
-              {/* Full Name */}
               <div>
                 <label className="label">Full Name</label>
                 <div className="relative">
@@ -104,8 +101,6 @@ export default function RegisterPage() {
                     value={form.full_name} onChange={set('full_name')} autoComplete="name" />
                 </div>
               </div>
-
-              {/* Email */}
               <div>
                 <label className="label">Email Address</label>
                 <div className="relative">
@@ -114,8 +109,6 @@ export default function RegisterPage() {
                     value={form.email} onChange={set('email')} autoComplete="email" />
                 </div>
               </div>
-
-              {/* Username */}
               <div>
                 <label className="label">Username</label>
                 <div className="relative">
@@ -124,8 +117,6 @@ export default function RegisterPage() {
                     value={form.username} onChange={set('username')} autoComplete="username" />
                 </div>
               </div>
-
-              {/* Role */}
               <div>
                 <label className="label">Role</label>
                 <div className="relative">
@@ -137,8 +128,6 @@ export default function RegisterPage() {
                   <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'var(--text-muted)' }} />
                 </div>
               </div>
-
-              {/* Admin Code */}
               {isPrivileged && (
                 <div className="rounded-lg p-3" style={{ background: 'var(--gold-dim)', border: '1px solid var(--border-gold)' }}>
                   <label className="label" style={{ color: 'var(--gold-light)' }}>Admin Registration Code</label>
@@ -157,8 +146,6 @@ export default function RegisterPage() {
                   </div>
                 </div>
               )}
-
-              {/* Password */}
               <div>
                 <label className="label">Password</label>
                 <div className="relative">
@@ -172,8 +159,6 @@ export default function RegisterPage() {
                   </button>
                 </div>
               </div>
-
-              {/* Confirm Password */}
               <div>
                 <label className="label">Confirm Password</label>
                 <div className="relative">
@@ -190,8 +175,6 @@ export default function RegisterPage() {
                   <p className="text-xs mt-1" style={{ color: 'var(--danger)' }}>Passwords do not match</p>
                 )}
               </div>
-
-              {/* Submit */}
               <button type="submit" className="btn-primary w-full justify-center py-3 text-sm mt-2" disabled={loading}>
                 {loading
                   ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -200,7 +183,6 @@ export default function RegisterPage() {
               </button>
             </form>
 
-            {/* Sign in link */}
             <div className="mt-6 pt-5 text-center" style={{ borderTop: '1px solid var(--border-subtle)' }}>
               <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Already have an account? </span>
               <Link to="/login" className="text-sm font-medium"

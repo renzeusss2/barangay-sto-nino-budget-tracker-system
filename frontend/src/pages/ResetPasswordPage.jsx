@@ -1,4 +1,4 @@
-import logo from '../assets/logo.jpg'
+import logo from '../assets/logo.png'
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { Lock, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react'
@@ -42,17 +42,22 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="min-h-screen flex" style={{ background: 'var(--bg-base)' }}>
-
-      {/* ── Left Panel — Photo Background ── */}
       <AuthLeftPanel variant="reset" />
-
-      {/* ── Right Panel ── */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
 
           {/* Mobile logo */}
           <div className="mb-6 lg:hidden text-center">
-            <img src={logo} alt="Barangay Sto. Niño Logo" className="w-16 h-16 object-contain mx-auto mb-2" />
+            <div className="flex justify-center mb-2">
+              <div className="w-16 h-16 rounded-full overflow-hidden" style={{ border: '2px solid var(--border-gold)' }}>
+                <img
+                  src={logo}
+                  alt="Barangay Sto. Niño Logo"
+                  className="w-full h-full object-cover"
+                  style={{ mixBlendMode: 'screen' }}
+                />
+              </div>
+            </div>
             <h1 className="text-xl font-bold" style={{ color: 'var(--text-white)' }}>Barangay Sto. Niño</h1>
           </div>
 
@@ -61,12 +66,20 @@ export default function ResetPasswordPage() {
 
             {/* Logo header */}
             <div className="text-center mb-6">
-              <img src={logo} alt="Barangay Sto. Niño Logo" className="w-16 h-16 object-contain mx-auto mb-2" />
+              <div className="flex justify-center mb-2">
+                <div className="w-16 h-16 rounded-full overflow-hidden" style={{ border: '2px solid var(--border-gold)' }}>
+                  <img
+                    src={logo}
+                    alt="Barangay Sto. Niño Logo"
+                    className="w-full h-full object-cover"
+                    style={{ mixBlendMode: 'screen' }}
+                  />
+                </div>
+              </div>
               <h1 className="text-lg font-bold" style={{ color: 'var(--text-white)' }}>Barangay Sto. Niño</h1>
               <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Budget Tracking System</p>
             </div>
 
-            {/* Invalid */}
             {invalid && !done && (
               <div className="text-center py-4">
                 <div className="flex items-center justify-center w-16 h-16 rounded-full mx-auto mb-4"
@@ -83,7 +96,6 @@ export default function ResetPasswordPage() {
               </div>
             )}
 
-            {/* Success */}
             {done && (
               <div className="text-center py-4">
                 <div className="flex items-center justify-center w-16 h-16 rounded-full mx-auto mb-4"
@@ -100,12 +112,10 @@ export default function ResetPasswordPage() {
               </div>
             )}
 
-            {/* Form */}
             {!invalid && !done && (
               <>
                 <h2 className="text-xl font-bold mb-1" style={{ color: 'var(--text-white)' }}>Set New Password</h2>
                 <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>Create a strong password for your account.</p>
-
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="label">New Password</label>
@@ -119,7 +129,6 @@ export default function ResetPasswordPage() {
                       </button>
                     </div>
                   </div>
-
                   <div>
                     <label className="label">Confirm Password</label>
                     <div className="relative">
@@ -128,7 +137,6 @@ export default function ResetPasswordPage() {
                         value={form.confirm_password} onChange={e => setForm(p => ({ ...p, confirm_password: e.target.value }))} />
                     </div>
                   </div>
-
                   {form.new_password && (
                     <div className="rounded-xl p-4" style={{ background: 'rgba(196,156,64,0.06)', border: '1px solid rgba(196,156,64,0.15)' }}>
                       {rules.map(r => (
@@ -139,7 +147,6 @@ export default function ResetPasswordPage() {
                       ))}
                     </div>
                   )}
-
                   <button type="submit" className="btn-primary w-full justify-center py-3 text-sm"
                     disabled={loading || !allPass} style={{ opacity: allPass ? 1 : 0.5 }}>
                     {loading ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" /> : <Lock size={15} />}
