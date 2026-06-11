@@ -33,7 +33,12 @@ export default function Layout() {
         <div className="p-5" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-lg flex-shrink-0 overflow-hidden" style={{ border: '1px solid var(--border-gold)' }}>
-              <img src={logo} alt="Logo" className="w-full h-full object-contain" />
+              <img
+                src={logo}
+                alt="Logo"
+                className="w-full h-full object-contain"
+                style={{ mixBlendMode: 'multiply' }}
+              />
             </div>
             <div>
               <p className="text-xs leading-none" style={{ color: 'var(--text-muted)' }}>Barangay Sto. Niño</p>
@@ -74,7 +79,12 @@ export default function Layout() {
       <main className="flex-1 overflow-auto">
         <div className="px-6 py-3 flex items-center justify-between" style={{ background: 'var(--bg-surface)', borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
-            <img src={logo} alt="Logo" className="w-4 h-4 object-contain" />
+            <img
+              src={logo}
+              alt="Logo"
+              className="w-4 h-4 object-contain"
+              style={{ mixBlendMode: 'multiply' }}
+            />
             <span>Barangay Sto. Niño</span><span>·</span><span>Budget Tracking System</span>
           </div>
           <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
