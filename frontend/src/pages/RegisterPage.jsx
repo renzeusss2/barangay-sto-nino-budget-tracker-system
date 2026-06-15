@@ -196,7 +196,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-xs mt-6" style={{ color: 'var(--text-muted)' }}>
             AI-Powered & Blockchain-Based Budget Tracking System v1.0<br />
-            © 2025 Barangay Sto. Niño, Parañaque City
+            © 2026 Barangay Sto. Niño, Parañaque City
           </p>
         </div>
       </div>
