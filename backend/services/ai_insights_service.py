@@ -205,7 +205,7 @@ class AIInsightsService:
             return {"anomalies": [], "analyzed": 0, "anomaly_count": 0}
 
         amounts         = [t.amount for t in transactions]
-        anomaly_indices = cls.detect_anomalies(amounts)
+        anomaly_indices = cls.detect_anomalies(amounts, threshold=1.5)
         anomalies = []
         for a in anomaly_indices:
             tx = transactions[a["index"]]
