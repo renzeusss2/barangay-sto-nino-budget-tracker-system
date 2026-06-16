@@ -8,7 +8,6 @@ import toast from 'react-hot-toast'
 const YEAR = new Date().getFullYear()
 const fmt = (n) => `₱${Number(n || 0).toLocaleString('en-PH', { minimumFractionDigits: 2 })}`
 
-/* ── Same style tokens as TransactionsPage ── */
 const T = {
   pageTitle:    { fontSize:'22px', fontWeight:'700', color:'#ffffff', marginBottom:'4px' },
   pageSubtitle: { fontSize:'13px', color:'rgba(196,156,64,0.8)' },
@@ -21,6 +20,7 @@ const T = {
   modal: { backgroundColor:'#122018', border:'1px solid rgba(196,156,64,0.25)', borderRadius:'14px', width:'100%', maxWidth:'500px', maxHeight:'90vh', overflowY:'auto' },
   modalLabel: { display:'block', fontSize:'12px', fontWeight:'600', color:'#b8c4bb', marginBottom:'6px' },
   modalInput: { width:'100%', backgroundColor:'#1a2e20', border:'1px solid #2f5238', borderRadius:'8px', padding:'10px 12px', fontSize:'13px', color:'#f0f0f0', outline:'none', boxSizing:'border-box', fontFamily:'inherit' },
+  errorInput: { width:'100%', backgroundColor:'#1a2e20', border:'1px solid #ef4444', borderRadius:'8px', padding:'10px 12px', fontSize:'13px', color:'#f0f0f0', outline:'none', boxSizing:'border-box', fontFamily:'inherit' },
 }
 
 const btnGold    = { display:'flex', alignItems:'center', gap:'6px', padding:'9px 18px', borderRadius:'8px', fontSize:'13px', fontWeight:'600', color:'#0e1a12', background:'linear-gradient(135deg,#c49c40 0%,#a8832e 100%)', border:'1px solid #e8c060', cursor:'pointer' }
@@ -46,16 +46,20 @@ const TL = { color:'#c49c40', fontWeight:'600', fontSize:'13px', marginBottom:'4
 const TI = { color:'#f0f0f0', fontSize:'13px' }
 const AX = { fontSize:11, fill:'#6e8872' }
 
+const EMPTY_FORM = { category_id:'', fiscal_year:YEAR, quarter:'', allocated_amount:'', description:'' }
+
 export default function BudgetPage() {
   const { hasRole } = useAuth()
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories]   = useState([])
   const [allocations, setAllocations] = useState([])
-  const [summary, setSummary] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [year, setYear] = useState(YEAR)
-  const [showModal, setShowModal] = useState(false)
-  const [editing, setEditing] = useState(null)
-  const [form, setForm] = useState({ category_id:'', fiscal_year:YEAR, quarter:'', allocated_amount:'', description:'' })
+  const [summary, setSummary]         = useState(null)
+  const [loading, setLoading]         = useState(true)
+  const [submitting, setSubmitting]   = useState(false)
+  const [year, setYear]               = useState(YEAR)
+  const [showModal, setShowModal]     = useState(false)
+  const [editing, setEditing]         = useState(null)
+  const [form, setForm]               = useState(EMPTY_FORM)
+  const [errors, setErrors]           = useState({})
 
   const load = async () => {
     setLoading(true)
@@ -63,37 +67,77 @@ export default function BudgetPage() {
       const [catRes, allocRes, sumRes] = await Promise.all([
         budgetAPI.categories(), budgetAPI.allocations(year), transactionAPI.summary(year),
       ])
-      setCategories(catRes.data); setAllocations(allocRes.data); setSummary(sumRes.data)
+      setCategories(catRes.data)
+      setAllocations(allocRes.data)
+      setSummary(sumRes.data)
     } catch { toast.error('Failed to load budget data') }
     finally { setLoading(false) }
   }
 
   useEffect(() => { load() }, [year])
 
+  // ── Validation ──────────────────────────────────────────────────────────────
+  const validate = () => {
+    const e = {}
+    if (!form.category_id)     e.category_id     = 'Please select a category'
+    if (!form.allocated_amount || parseFloat(form.allocated_amount) <= 0)
+      e.allocated_amount = 'Please enter a valid amount greater than 0'
+    if (!form.fiscal_year)     e.fiscal_year     = 'Please select a fiscal year'
+    setErrors(e)
+    return Object.keys(e).length === 0
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!validate()) return
+    setSubmitting(true)
     try {
       if (editing) {
-        await budgetAPI.updateAllocation(editing.id, form)
-        toast.success('Allocation updated')
+        await budgetAPI.updateAllocation(editing.id, {
+          allocated_amount: parseFloat(form.allocated_amount),
+          description: form.description,
+        })
+        toast.success('Allocation updated!')
       } else {
-        await budgetAPI.createAllocation({ ...form, category_id:parseInt(form.category_id), fiscal_year:parseInt(form.fiscal_year), allocated_amount:parseFloat(form.allocated_amount), quarter:form.quarter?parseInt(form.quarter):null })
-        toast.success('Budget allocation created')
+        await budgetAPI.createAllocation({
+          category_id:      parseInt(form.category_id),
+          fiscal_year:      parseInt(form.fiscal_year),
+          quarter:          form.quarter ? parseInt(form.quarter) : null,
+          allocated_amount: parseFloat(form.allocated_amount),
+          description:      form.description || null,
+        })
+        toast.success('Budget allocation created!')
       }
-      setShowModal(false); setEditing(null); load()
-    } catch (err) { toast.error(err.response?.data?.detail || 'Operation failed') }
+      setShowModal(false)
+      setEditing(null)
+      setForm(EMPTY_FORM)
+      setErrors({})
+      load()
+    } catch (err) {
+      toast.error(err.response?.data?.detail || 'Operation failed')
+    } finally { setSubmitting(false) }
   }
 
   const handleApprove = async (id) => {
-    try { await budgetAPI.updateAllocation(id, { status:'approved' }); toast.success('Approved'); load() }
+    try { await budgetAPI.updateAllocation(id, { status:'approved' }); toast.success('Approved!'); load() }
     catch { toast.error('Failed to approve') }
   }
 
   const startEdit = (a) => {
     setEditing(a)
     setForm({ category_id:a.category_id, fiscal_year:a.fiscal_year, quarter:a.quarter||'', allocated_amount:a.allocated_amount, description:a.description||'' })
+    setErrors({})
     setShowModal(true)
   }
+
+  const openNew = () => {
+    setEditing(null)
+    setForm({ ...EMPTY_FORM, fiscal_year: year })
+    setErrors({})
+    setShowModal(true)
+  }
+
+  const closeModal = () => { setShowModal(false); setEditing(null); setErrors({}) }
 
   const chartData = allocations.reduce((acc, a) => {
     const ex = acc.find(x => x.category === a.category_code)
@@ -119,9 +163,7 @@ export default function BudgetPage() {
           </select>
           <button onClick={load} style={btnOutline}><RefreshCw size={14} /></button>
           {hasRole('admin','treasurer') && (
-            <button onClick={() => { setEditing(null); setForm({ category_id:'', fiscal_year:year, quarter:'', allocated_amount:'', description:'' }); setShowModal(true) }} style={btnGold}>
-              <Plus size={16} /> New Allocation
-            </button>
+            <button onClick={openNew} style={btnGold}><Plus size={16} /> New Allocation</button>
           )}
         </div>
       </div>
@@ -129,9 +171,9 @@ export default function BudgetPage() {
       {/* Summary Cards */}
       <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'16px' }}>
         {[
-          { label:'Total Allocated', value:fmt(totalAllocated),       color:'#c49c40' },
+          { label:'Total Allocated', value:fmt(totalAllocated),        color:'#c49c40' },
           { label:'Total Spent',     value:fmt(summary?.total_expense), color:'#ef4444' },
-          { label:'Net Balance',     value:fmt(summary?.net_balance),  color:(summary?.net_balance??0)>=0?'#22c55e':'#ef4444' },
+          { label:'Net Balance',     value:fmt(summary?.net_balance),   color:(summary?.net_balance??0)>=0?'#22c55e':'#ef4444' },
         ].map(s => (
           <div key={s.label} style={T.statCard}>
             <p style={{ fontSize:'12px', color:'#6e8872', marginBottom:'6px' }}>{s.label}</p>
@@ -168,7 +210,7 @@ export default function BudgetPage() {
             <thead>
               <tr>
                 {['Category','Fiscal Year','Quarter','Allocated Amount','Description','Status',
-                  hasRole('admin','treasurer','auditor')?'Actions':null
+                  hasRole('admin','treasurer','auditor') ? 'Actions' : null
                 ].filter(Boolean).map(h => <th key={h} style={T.th}>{h}</th>)}
               </tr>
             </thead>
@@ -228,26 +270,41 @@ export default function BudgetPage() {
           <div style={T.modal}>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'20px 24px', borderBottom:'1px solid #243d2a' }}>
               <h2 style={{ fontSize:'16px', fontWeight:'700', color:'#ffffff', margin:0 }}>{editing ? 'Edit Allocation' : 'New Budget Allocation'}</h2>
-              <button onClick={() => { setShowModal(false); setEditing(null) }} style={{ background:'none', border:'none', color:'#6e8872', cursor:'pointer', fontSize:'20px', lineHeight:1 }}>✕</button>
+              <button onClick={closeModal} style={{ background:'none', border:'none', color:'#6e8872', cursor:'pointer', fontSize:'20px', lineHeight:1 }}>✕</button>
             </div>
+
             <form onSubmit={handleSubmit} style={{ padding:'20px 24px', display:'flex', flexDirection:'column', gap:'14px' }}>
+              {/* Category */}
               <div>
                 <label style={T.modalLabel}>Category *</label>
-                <select style={T.modalInput} value={form.category_id} onChange={e => setForm(p => ({...p, category_id:e.target.value}))}>
+                <select
+                  style={errors.category_id ? T.errorInput : T.modalInput}
+                  value={form.category_id}
+                  onChange={e => { setForm(p => ({...p, category_id:e.target.value})); setErrors(p => ({...p, category_id:''})) }}
+                  disabled={!!editing}
+                >
                   <option value="">Select category</option>
                   {categories.map(c => <option key={c.id} value={c.id}>{c.name} ({c.code})</option>)}
                 </select>
+                {errors.category_id && <p style={{ color:'#ef4444', fontSize:'11px', marginTop:'4px' }}>{errors.category_id}</p>}
               </div>
+
+              {/* Fiscal Year + Quarter */}
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px' }}>
                 <div>
-                  <label style={T.modalLabel}>Fiscal Year</label>
-                  <select style={T.modalInput} value={form.fiscal_year} onChange={e => setForm(p => ({...p, fiscal_year:e.target.value}))}>
+                  <label style={T.modalLabel}>Fiscal Year *</label>
+                  <select
+                    style={errors.fiscal_year ? T.errorInput : T.modalInput}
+                    value={form.fiscal_year}
+                    onChange={e => { setForm(p => ({...p, fiscal_year:e.target.value})); setErrors(p => ({...p, fiscal_year:''})) }}
+                    disabled={!!editing}
+                  >
                     {[YEAR, YEAR+1, YEAR-1].map(y => <option key={y} value={y}>{y}</option>)}
                   </select>
                 </div>
                 <div>
                   <label style={T.modalLabel}>Quarter (Optional)</label>
-                  <select style={T.modalInput} value={form.quarter} onChange={e => setForm(p => ({...p, quarter:e.target.value}))}>
+                  <select style={T.modalInput} value={form.quarter} onChange={e => setForm(p => ({...p, quarter:e.target.value}))} disabled={!!editing}>
                     <option value="">Annual</option>
                     <option value="1">Q1 (Jan–Mar)</option>
                     <option value="2">Q2 (Apr–Jun)</option>
@@ -256,17 +313,32 @@ export default function BudgetPage() {
                   </select>
                 </div>
               </div>
+
+              {/* Amount */}
               <div>
                 <label style={T.modalLabel}>Allocated Amount (₱) *</label>
-                <input style={T.modalInput} type="number" step="0.01" min="0" placeholder="0.00" value={form.allocated_amount} onChange={e => setForm(p => ({...p, allocated_amount:e.target.value}))} />
+                <input
+                  style={errors.allocated_amount ? T.errorInput : T.modalInput}
+                  type="number" step="0.01" min="0.01"
+                  placeholder="e.g. 150000.00"
+                  value={form.allocated_amount}
+                  onChange={e => { setForm(p => ({...p, allocated_amount:e.target.value})); setErrors(p => ({...p, allocated_amount:''})) }}
+                />
+                {errors.allocated_amount && <p style={{ color:'#ef4444', fontSize:'11px', marginTop:'4px' }}>{errors.allocated_amount}</p>}
               </div>
+
+              {/* Description */}
               <div>
                 <label style={T.modalLabel}>Description</label>
-                <textarea style={{ ...T.modalInput, resize:'vertical' }} rows={2} placeholder="Budget description" value={form.description} onChange={e => setForm(p => ({...p, description:e.target.value}))} />
+                <textarea style={{ ...T.modalInput, resize:'vertical' }} rows={2} placeholder="Optional budget description" value={form.description} onChange={e => setForm(p => ({...p, description:e.target.value}))} />
               </div>
+
+              {/* Buttons */}
               <div style={{ display:'flex', gap:'10px', paddingTop:'4px' }}>
-                <button type="button" onClick={() => { setShowModal(false); setEditing(null) }} style={{ ...btnOutline, flex:1, justifyContent:'center' }}>Cancel</button>
-                <button type="submit" style={{ ...btnGold, flex:1, justifyContent:'center' }}>{editing ? 'Update' : 'Create'} Allocation</button>
+                <button type="button" onClick={closeModal} style={{ ...btnOutline, flex:1, justifyContent:'center' }}>Cancel</button>
+                <button type="submit" style={{ ...btnGold, flex:1, justifyContent:'center', opacity: submitting ? 0.7 : 1 }} disabled={submitting}>
+                  {submitting ? 'Saving...' : `${editing ? 'Update' : 'Create'} Allocation`}
+                </button>
               </div>
             </form>
           </div>
